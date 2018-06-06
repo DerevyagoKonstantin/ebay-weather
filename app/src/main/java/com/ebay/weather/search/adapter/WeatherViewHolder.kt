@@ -11,13 +11,21 @@ import kotlinx.android.synthetic.main.weather_item.view.weatherDescriptionTextVi
 import kotlinx.android.synthetic.main.weather_item.view.weatherLocationTextView
 import kotlinx.android.synthetic.main.weather_item.view.weatherTemperatureTextView
 import kotlinx.android.synthetic.main.weather_item.view.weatherTitleTextView
+import kotlinx.android.synthetic.main.weather_item.view.weatherWindTextView
+import java.text.DecimalFormat
 
 
 class WeatherViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+
+    private val decimalFormat = DecimalFormat("0.##")
+
     fun bind(weatherInfo: WeatherInfo) {
         val context = itemView.context
 
-        val location = "${weatherInfo.name}, ${weatherInfo.sys.country}"
+        val coordinates = weatherInfo.coord
+        val lat = decimalFormat.format(coordinates.lat)
+        val lon = decimalFormat.format(coordinates.lon)
+        val location = "${weatherInfo.name}, ${weatherInfo.sys.country}    ($lat°; $lon°)"
         itemView.weatherLocationTextView.text = location
 
         val isWeatherNotEmpty = weatherInfo.weather.isNotEmpty()
@@ -31,8 +39,15 @@ class WeatherViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
         val temperature = "${weatherInfo.main.temp} K"
         itemView.weatherTemperatureTextView.text = temperature
-        val pressure = context.getString(R.string.weather_atmospheric_pressure_value, weatherInfo.main.pressure)
+
+        val pressureValue = decimalFormat.format(weatherInfo.main.pressure)
+        val pressure = context.getString(R.string.weather_atmospheric_pressure_value, pressureValue)
         itemView.weatherAtmosphericPressureTextView.text = pressure
+
+        val windSpeed = decimalFormat.format(weatherInfo.wind.speed)
+        val wind = context.getString(R.string.weather_wind_value, windSpeed)
+        itemView.weatherWindTextView.text = wind
+
         val clouds = "${weatherInfo.clouds.all}%"
         itemView.weatherCloudsTextView.text = clouds
     }
