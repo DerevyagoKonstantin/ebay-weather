@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">EbayWeather</string>
 
-    <string name="weather_search_hint">Enter City Name or Zip Code</string>
+    <string name="weather_search_hint">Enter City, Zip Code or GPS…</string>
     <string name="weather_search_empty">Check Weather Now!</string>
     <string name="weather_search_error">No Weather Found</string>
     <string name="weather_temperature">Temperature :</string>
