@@ -1,12 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/searchToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/weather_search_hint"
+                android:inputType="textFilter|textCapWords"
+                android:lines="1"
+                android:textColor="@android:color/white"
+                android:textCursorDrawable="@null" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
     <TextView
+        android:id="@+id/searchEmptyView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Hello World!" />
+        android:drawableTop="@drawable/ic_weather_empty"
+        android:text="@string/weather_search_empty"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/weather_search_empty_text" />
 
-</FrameLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/searchSwipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/searchWeatherView"
+                layout="@layout/weather_item"
+                android:visibility="gone" />
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>
