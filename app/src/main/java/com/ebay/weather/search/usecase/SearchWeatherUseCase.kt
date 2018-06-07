@@ -6,11 +6,15 @@ import com.ebay.weather.data.api.WeatherRemoteSource
 import com.ebay.weather.entity.WeatherInfo
 
 
-class GetWeatherUseCase(
+class SearchWeatherUseCase(
         private val weatherRemoteSource: WeatherRemoteSource
 ) : UseCase<String, LiveDataCallback<WeatherInfo>> {
 
     override fun execute(input: String): LiveDataCallback<WeatherInfo> {
-        return weatherRemoteSource.getWeather(input)
+        return if (input.isNotEmpty()) {
+            weatherRemoteSource.getWeather(input)
+        } else {
+            LiveDataCallback()
+        }
     }
 }

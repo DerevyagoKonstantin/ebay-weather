@@ -5,9 +5,9 @@ import android.arch.lifecycle.ViewModelProviders
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import com.ebay.weather.R
 import com.ebay.weather.base.BaseFragment
-import com.ebay.weather.entity.WeatherInfo
 import com.ebay.weather.extensions.visible
 import com.ebay.weather.search.adapter.WeatherViewHolder
 import com.ebay.weather.search.di.searchModule
@@ -44,23 +44,25 @@ class SearchFragment : BaseFragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.searchWeather(s.toString())
+                viewModel.searchText.value = s.toString()
                 view.searchSwipeRefresh.isEnabled = !s.isNullOrEmpty()
             }
         })
         view.searchSwipeRefresh.setOnRefreshListener {
-            viewModel.searchWeather(view.searchEditText.text.toString())
+            viewModel.searchText.value = view.searchEditText.text.toString()
         }
 
-        viewModel.weatherInfo.observe(this, Observer<WeatherInfo> {
+        bindRecentSearch(viewModel.recentSearchInfo, view.searchEditText)
+
+        viewModel.weatherInfo.observe(this, Observer {
             it?.let { weather -> weatherViewHolder.bind(weather) }
         })
-        viewModel.weatherError.observe(this, Observer<Exception> {
+        viewModel.weatherError.observe(this, Observer {
             it?.let { exception -> showError(exception) }
         })
-        viewModel.emptySearch.observe(this, Observer<Boolean> {
-            it?.let { empty ->
-                if (empty) {
+        viewModel.searchText.observe(this, Observer {
+            it?.let { text ->
+                if (text.isEmpty()) {
                     showEmpty()
                 }
             }
@@ -76,12 +78,17 @@ class SearchFragment : BaseFragment() {
         })
     }
 
+    private fun bindRecentSearch(searchText: String, searchView: EditText) {
+        searchView.setText(searchText)
+        searchView.setSelection(searchText.length)
+    }
+
     private fun showEmpty() {
         bindEmptyView(R.string.weather_search_empty, R.drawable.ic_weather_empty)
     }
 
-    private fun showError(exception: Exception) {
-        exception.printStackTrace()
+    private fun showError(error: Throwable) {
+        error.printStackTrace()
         bindEmptyView(R.string.weather_search_error, R.drawable.ic_weather_error)
     }
 

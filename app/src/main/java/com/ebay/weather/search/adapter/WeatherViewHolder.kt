@@ -13,11 +13,18 @@ import kotlinx.android.synthetic.main.weather_item.view.weatherTemperatureTextVi
 import kotlinx.android.synthetic.main.weather_item.view.weatherTitleTextView
 import kotlinx.android.synthetic.main.weather_item.view.weatherWindTextView
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
 
 class WeatherViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
-    private val decimalFormat = DecimalFormat("0.##")
+    private val decimalFormat: DecimalFormat
+
+    init {
+        val decimalFormatSymbols = DecimalFormatSymbols()
+        decimalFormatSymbols.decimalSeparator = '.'
+        decimalFormat = DecimalFormat("0.##", decimalFormatSymbols)
+    }
 
     fun bind(weatherInfo: WeatherInfo) {
         val context = itemView.context
@@ -25,7 +32,7 @@ class WeatherViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         val coordinates = weatherInfo.coord
         val lat = decimalFormat.format(coordinates.lat)
         val lon = decimalFormat.format(coordinates.lon)
-        val location = "${weatherInfo.name}, ${weatherInfo.sys.country}    ($lat°; $lon°)"
+        val location = "${weatherInfo.name}, ${weatherInfo.sys.country}    ($lat°, $lon°)"
         itemView.weatherLocationTextView.text = location
 
         val isWeatherNotEmpty = weatherInfo.weather.isNotEmpty()
