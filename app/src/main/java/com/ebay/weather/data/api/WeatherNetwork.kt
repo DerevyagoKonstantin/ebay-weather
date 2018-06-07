@@ -1,6 +1,9 @@
 package com.ebay.weather.data.api
 
-import com.ebay.weather.entity.WeatherInfo
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
+import com.ebay.weather.data.api.entity.WeatherInfo
+import com.ebay.weather.entity.Weather
 import java.util.regex.Pattern
 
 
@@ -10,12 +13,13 @@ const val GPS_REGEX = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?)\\s*,\\s*[-+]?(180(
 
 class WeatherNetwork(private val api: WeatherApi) : WeatherRemoteSource {
 
-    override fun getWeather(search: String): LiveDataCallback<WeatherInfo> {
-        return when {
+    override fun getWeather(search: String): LiveData<NetworkData<Weather>> {
+        val result = when {
             Pattern.matches(ZIPCODE_REGEX, search) -> getWeatherByZipcode(search)
             Pattern.matches(GPS_REGEX, search) -> getWeatherByGps(search)
             else -> getWeatherByCity(search)
         }
+        return Transformations.map(result, { NetworkData(it.data.parse(), it.error) })
     }
 
     private fun getWeatherByZipcode(zipcode: String): LiveDataCallback<WeatherInfo> {
@@ -33,5 +37,36 @@ class WeatherNetwork(private val api: WeatherApi) : WeatherRemoteSource {
         val lon = gps.substringAfter(",").trim()
         val call = api.getWeatherByGps(lat, lon, WEATHER_API_KEY)
         return LiveDataCallback(call)
+    }
+}
+
+private fun WeatherInfo?.parse(): Weather? {
+    return if (this != null) {
+        val title = if (weather.isNotEmpty()) {
+            weather[0].main
+        } else {
+            ""
+        }
+        val description = if (weather.isNotEmpty()) {
+            weather[0].description
+        } else {
+            ""
+        }
+
+        Weather(
+                id,
+                name,
+                sys.country,
+                coord.lat,
+                coord.lon,
+                title,
+                description,
+                main.temp,
+                main.pressure,
+                wind.speed,
+                clouds.all
+        )
+    } else {
+        null
     }
 }

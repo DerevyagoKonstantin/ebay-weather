@@ -7,9 +7,9 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import com.ebay.weather.R
+import com.ebay.weather.WeatherViewModel
 import com.ebay.weather.base.BaseFragment
 import com.ebay.weather.extensions.visible
-import com.ebay.weather.search.adapter.WeatherViewHolder
 import com.ebay.weather.search.di.searchModule
 import kotlinx.android.synthetic.main.fragment_search.view.searchEditText
 import kotlinx.android.synthetic.main.fragment_search.view.searchEmptyView
@@ -20,14 +20,11 @@ import org.kodein.di.generic.instance
 
 class SearchFragment : BaseFragment() {
 
-    private lateinit var weatherViewHolder: WeatherViewHolder
-
     override val viewId = R.layout.fragment_search
 
     override fun provideInjections() = searchModule
 
     override fun init(view: View) {
-        weatherViewHolder = WeatherViewHolder(view.searchWeatherView)
         view.searchSwipeRefresh.setColorSchemeResources(R.color.colorPrimary)
         view.searchSwipeRefresh.isEnabled = false
     }
@@ -55,7 +52,7 @@ class SearchFragment : BaseFragment() {
         bindRecentSearch(viewModel.recentSearchInfo, view.searchEditText)
 
         viewModel.weatherInfo.observe(this, Observer {
-            it?.let { weather -> weatherViewHolder.bind(weather) }
+            it?.let { weather -> view.searchWeatherView.bind(weather) }
         })
         viewModel.weatherError.observe(this, Observer {
             it?.let { exception -> showError(exception) }
@@ -76,6 +73,13 @@ class SearchFragment : BaseFragment() {
         viewModel.progressVisibility.observe(this, Observer<Boolean> {
             it?.let { visible -> view.searchSwipeRefresh.isRefreshing = visible }
         })
+
+        activity?.let {
+            val parentViewModel = ViewModelProviders.of(it).get(WeatherViewModel::class.java)
+            parentViewModel.selectedSearch.observe(this, Observer {
+                it?.let { search -> bindRecentSearch(search, view.searchEditText) }
+            })
+        }
     }
 
     private fun bindRecentSearch(searchText: String, searchView: EditText) {
@@ -95,5 +99,12 @@ class SearchFragment : BaseFragment() {
     private fun bindEmptyView(textRes: Int, imageRes: Int) {
         view?.searchEmptyView?.setText(textRes)
         view?.searchEmptyView?.setCompoundDrawablesWithIntrinsicBounds(0, imageRes, 0, 0)
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser) {
+            view?.searchEditText?.requestFocus()
+        }
     }
 }

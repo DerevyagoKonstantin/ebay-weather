@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".WeatherActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

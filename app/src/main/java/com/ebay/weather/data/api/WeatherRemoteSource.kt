@@ -1,9 +1,10 @@
 package com.ebay.weather.data.api
 
-import com.ebay.weather.entity.WeatherInfo
+import android.arch.lifecycle.LiveData
+import com.ebay.weather.entity.Weather
 
 
 interface WeatherRemoteSource {
 
-    fun getWeather(search: String): LiveDataCallback<WeatherInfo>
+    fun getWeather(search: String): LiveData<NetworkData<Weather>>
 }

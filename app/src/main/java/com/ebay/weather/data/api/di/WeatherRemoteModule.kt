@@ -3,6 +3,7 @@ package com.ebay.weather.data.api.di
 import com.ebay.weather.data.api.BASE_URL
 import com.ebay.weather.data.api.WeatherApi
 import com.ebay.weather.data.api.WeatherNetwork
+import com.ebay.weather.data.api.WeatherRemoteSource
 import okhttp3.OkHttpClient
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -33,5 +34,5 @@ val weatherRemoteModule = Kodein.Module {
                 .create(WeatherApi::class.java)
     }
 
-    bind<WeatherNetwork>() with singleton { WeatherNetwork(instance()) }
+    bind<WeatherRemoteSource>() with singleton { WeatherNetwork(instance()) }
 }

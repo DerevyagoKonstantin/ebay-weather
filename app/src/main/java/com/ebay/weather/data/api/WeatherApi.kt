@@ -1,6 +1,6 @@
 package com.ebay.weather.data.api
 
-import com.ebay.weather.entity.WeatherInfo
+import com.ebay.weather.data.api.entity.WeatherInfo
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">EbayWeather</string>
 
+    <string name="weather_navigation_search">Search</string>
+    <string name="weather_navigation_recent">Recent</string>
+
     <string name="weather_search_hint">Enter City, Zip Code or GPS…</string>
     <string name="weather_search_empty">Check Weather Now!</string>
     <string name="weather_search_error">No Weather Found</string>
@@ -10,4 +13,7 @@
     <string name="weather_wind">Wind :</string>
     <string name="weather_wind_value">%s meter/sec</string>
     <string name="weather_clouds">Clouds :</string>
+
+    <string name="weather_recent_searches">Recent Searches</string>
+    <string name="weather_recent_empty">You have no successfully searches :(</string>
 </resources>

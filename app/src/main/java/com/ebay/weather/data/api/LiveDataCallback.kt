@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 
 class LiveDataCallback<T> : LiveData<NetworkData<T>>, Callback<T> {
@@ -22,7 +21,7 @@ class LiveDataCallback<T> : LiveData<NetworkData<T>>, Callback<T> {
             value = if (it.isSuccessful) {
                 NetworkData(data = it.body())
             } else {
-                NetworkData(error = Exception(it.errorBody().toString()))
+                NetworkData(error = Throwable(it.errorBody()?.string()))
             }
         }
     }

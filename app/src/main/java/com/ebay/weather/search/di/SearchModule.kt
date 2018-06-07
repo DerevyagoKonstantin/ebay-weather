@@ -4,6 +4,7 @@ import com.ebay.weather.data.api.di.weatherRemoteModule
 import com.ebay.weather.data.preferences.di.weatherPreferencesModule
 import com.ebay.weather.di.gsonModule
 import com.ebay.weather.search.SearchViewModelFactory
+import com.ebay.weather.search.usecase.AddWeatherSearchUseCase
 import com.ebay.weather.search.usecase.GetRecentWeatherSearchUseCase
 import com.ebay.weather.search.usecase.SaveRecentWeatherSearchUseCase
 import com.ebay.weather.search.usecase.SearchWeatherUseCase
@@ -20,5 +21,8 @@ val searchModule = Kodein.Module {
     bind<SearchWeatherUseCase>() with provider { SearchWeatherUseCase(instance()) }
     bind<SaveRecentWeatherSearchUseCase>() with provider { SaveRecentWeatherSearchUseCase(instance()) }
     bind<GetRecentWeatherSearchUseCase>() with provider { GetRecentWeatherSearchUseCase(instance()) }
-    bind<SearchViewModelFactory>() with provider { SearchViewModelFactory(instance(), instance(), instance()) }
+    bind<AddWeatherSearchUseCase>() with provider { AddWeatherSearchUseCase(instance()) }
+    bind<SearchViewModelFactory>() with provider {
+        SearchViewModelFactory(instance(), instance(), instance(), instance())
+    }
 }

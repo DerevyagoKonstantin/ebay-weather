@@ -1,4 +1,4 @@
-package com.ebay.weather.entity
+package com.ebay.weather.data.api.entity
 
 
 data class WeatherInfo(

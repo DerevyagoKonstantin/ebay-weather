@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="weather_search_empty_text">24sp</dimen>
+    <dimen name="divider_size">1px</dimen>
+
+    <dimen name="weather_empty_text">24sp</dimen>
+    <dimen name="weather_empty_margin">20dp</dimen>
     <dimen name="weather_info_margin_horizontal">16dp</dimen>
     <dimen name="weather_info_margin_vertical">8dp</dimen>
     <dimen name="weather_info_big_text">18sp</dimen>
+
+    <dimen name="weather_search_text_margin">16dp</dimen>
+    <dimen name="weather_search_delete_padding">8dp</dimen>
+    <dimen name="weather_search_delete_margin">8dp</dimen>
 </resources>
