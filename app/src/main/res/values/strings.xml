@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EbayWeather</string>
+    <string name="app_name">My Weather</string>
 
     <string name="weather_navigation_search">Search</string>
     <string name="weather_navigation_recent">Recent</string>
