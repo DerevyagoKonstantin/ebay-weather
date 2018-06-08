@@ -29,6 +29,7 @@ kotlin {
 
 ext {
     supportVersion = "27.1.1"
+    lifecycleVersion = "1.1.1"
     roomVersion = "1.1.0"
     kodeinVersion = "5.0.0"
     retrofitVersion = "2.4.0"
@@ -38,6 +39,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //tests
     testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:2.18.3"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //kotlin
@@ -47,10 +49,12 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
     //architecture-components
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation "android.arch.lifecycle:extensions:$lifecycleVersion"
+    testImplementation "android.arch.core:core-testing:$lifecycleVersion"
     implementation "android.arch.persistence.room:runtime:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
     kapt "android.arch.persistence.room:compiler:$roomVersion"
+    testImplementation "android.arch.persistence.room:testing:$roomVersion"
     //coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5'
     //kodein

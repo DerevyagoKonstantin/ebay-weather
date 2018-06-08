@@ -14,7 +14,7 @@ import com.ebay.weather.data.db.entity.WeatherSearch
 interface WeatherSearchDao {
 
     @Insert
-    fun insert(weatherSearch: WeatherSearch)
+    fun insert(weatherSearch: WeatherSearch): Long
 
     @Delete
     fun delete(weatherSearch: WeatherSearch)
